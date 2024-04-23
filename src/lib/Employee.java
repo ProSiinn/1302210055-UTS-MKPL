@@ -1,7 +1,6 @@
 package lib;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,24 +48,10 @@ public class Employee {
 	
 
 	
-	public void setMonthlySalary(int grade) {	
-		if (grade == 1) {
-			monthlySalary = 3000000;
-			if (isForeigner) {
-				monthlySalary = (int) (3000000 * 1.5);
-			}
-		}else if (grade == 2) {
-			monthlySalary = 5000000;
-			if (isForeigner) {
-				monthlySalary = (int) (3000000 * 1.5);
-			}
-		}else if (grade == 3) {
-			monthlySalary = 7000000;
-			if (isForeigner) {
-				monthlySalary = (int) (3000000 * 1.5);
-			}
-		}
-	}
+	public void setMonthlySalary(Grade grade) {
+        int baseSalary = grade.getSalary();
+        monthlySalary = isForeigner ? (int) (baseSalary * 1.5) : baseSalary;
+    }
 	
 	public void setAnnualDeductible(int deductible) {	
 		this.annualDeductible = deductible;
@@ -98,5 +83,20 @@ public class Employee {
 		}
 		
 		return TaxFunction.calculateTax(monthlySalary, otherMonthlyIncome, monthWorkingInYear, annualDeductible, spouseIdNumber.equals(""), childIdNumbers.size());
+	}
+
+	public enum Grade {
+        GRADE_1(3000000),
+        GRADE_2(5000000),
+        GRADE_3(7000000);
+
+        private final int salary;
+
+        Grade(int salary) {
+            this.salary = salary;
+        }
+		public int getSalary() {
+            return salary;
+        }
 	}
 }
